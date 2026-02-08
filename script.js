@@ -66,7 +66,7 @@ function startEngine() {
     lfo.start();
 
     engineRunning = true;
-    engineBtn.textContent = "Стоп";
+    engineBtn.textContent = "Stop Engine";
     engineBtn.classList.add("stop");
 }
 
@@ -87,7 +87,7 @@ function stopEngine() {
     audioContext = null;
 
     engineRunning = false;
-    engineBtn.textContent = "Старт";
+    engineBtn.textContent = "Start Engine";
     engineBtn.classList.remove("stop");
 }
 
