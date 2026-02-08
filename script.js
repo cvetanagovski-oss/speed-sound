@@ -1,55 +1,67 @@
 const speedDisplay = document.getElementById("speed");
 const speedControl = document.getElementById("speedControl");
-const muteBtn = document.getElementById("muteBtn");
+const engineBtn = document.getElementById("engineBtn");
 
-const BASE_FREQUENCY = 500;
-const STEP_HZ = 2;
+const BASE_FREQUENCY = 400;
+const STEP_HZ = 6;
 
 let audioContext = null;
 let oscillator = null;
-let isMuted = false;
+let gainNode = null;
+let engineRunning = false;
 
-function startAudio() {
+function startEngine() {
 
-    if (audioContext) return;
+    if (engineRunning) return;
 
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
     oscillator = audioContext.createOscillator();
-    oscillator.type = "sine";
+    gainNode = audioContext.createGain();
+
+    oscillator.type = "sawtooth"; // по-моторен звук
     oscillator.frequency.value = BASE_FREQUENCY;
 
-    oscillator.connect(audioContext.destination);
+    gainNode.gain.value = 0.15;
 
-    audioContext.resume().then(() => {
-        oscillator.start();
-    });
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.start();
+
+    engineRunning = true;
+    engineBtn.textContent = "Стоп";
+    engineBtn.classList.add("stop");
 }
 
-document.addEventListener("touchstart", startAudio, { once: true });
-document.addEventListener("click", startAudio, { once: true });
+function stopEngine() {
+
+    if (!engineRunning) return;
+
+    oscillator.stop();
+    audioContext.close();
+
+    engineRunning = false;
+    engineBtn.textContent = "Старт";
+    engineBtn.classList.remove("stop");
+}
 
 speedControl.addEventListener("input", function () {
 
     const speed = parseInt(this.value);
     speedDisplay.textContent = speed;
 
-    if (!oscillator || isMuted) return;
+    if (!engineRunning) return;
 
-    oscillator.frequency.value = BASE_FREQUENCY + speed * STEP_HZ;
+    const newFrequency = BASE_FREQUENCY + speed * STEP_HZ;
+    oscillator.frequency.setTargetAtTime(newFrequency, audioContext.currentTime, 0.05);
 });
 
-muteBtn.addEventListener("click", function () {
+engineBtn.addEventListener("click", function () {
 
-    if (!audioContext) return;
-
-    if (!isMuted) {
-        audioContext.suspend();
-        muteBtn.textContent = "Включи звук";
-        isMuted = true;
+    if (!engineRunning) {
+        startEngine();
     } else {
-        audioContext.resume();
-        muteBtn.textContent = "Изключи звук";
-        isMuted = false;
+        stopEngine();
     }
 });

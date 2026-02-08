@@ -41,17 +41,23 @@ h1 {
     -webkit-appearance: slider-vertical;
 }
 
-#muteBtn {
+#engineBtn {
     width: 100%;
     padding: 20px;
     font-size: 23px;
     border: none;
     border-radius: 10px;
-    background: #111;
+    background: #0a0;
     color: white;
-    border: 1px solid #333;
+    border: 1px solid #0f0;
+    transition: 0.3s;
 }
 
-#muteBtn:active {
-    background: #222;
+#engineBtn.stop {
+    background: #900;
+    border: 1px solid #f00;
+}
+
+#engineBtn:active {
+    transform: scale(0.98);
 }
