@@ -9,13 +9,17 @@ body {
     height: 100vh;
 }
 
+/* Контейнер */
 .app {
     text-align: center;
     width: 90%;
     max-width: 400px;
     position: relative;
+
+    padding-right: 140px;   /* място за вертикалната газ */
 }
 
+/* Заглавие */
 h1 {
     font-size: 24px;
     letter-spacing: 2px;
@@ -23,6 +27,7 @@ h1 {
     color: #888;
 }
 
+/* Дисплей */
 .speed-display {
     font-size: 90px;
     font-weight: bold;
@@ -35,23 +40,25 @@ h1 {
     margin-top: -10px;
 }
 
-/* ===== Вертикална газ вдясно ===== */
+/* ===== Вертикална газ ===== */
 
 #speedControl {
-    width: 300px;
+    width: 300px;              /* НЕ пипаме дебелината */
+    max-width: 300px;
+
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
 
     position: absolute;
-    right: -200px;   /* изнесена вдясно */
+    right: 20px;               /* стои вътре, не излиза */
     top: 50%;
     transform: translateY(-50%) rotate(-90deg);
 }
 
 /* Писта */
 #speedControl::-webkit-slider-runnable-track {
-    height: 25px;
+    height: 25px;              /* дебелината остава */
     background: #333;
     border-radius: 15px;
 }
@@ -66,10 +73,11 @@ h1 {
     margin-top: -5px;
 }
 
+/* Бутон */
 #engineBtn {
-    width: 100%;
-    padding: 20px;
-    font-size: 23px;
+    width: 65%;          /* по-къс бутон */
+    padding: 14px;
+    font-size: 18px;
     border: none;
     border-radius: 10px;
     background: #0a0;
